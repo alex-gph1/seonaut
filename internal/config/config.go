@@ -2,7 +2,7 @@ package config
 
 import (
 	"path/filepath"
-
+	"strings"
 	"github.com/spf13/viper"
 )
 
@@ -39,6 +39,9 @@ func NewConfig(configFile string) (*Config, error) {
 	viper.AddConfigPath(filepath.Dir(configFile))
 	viper.SetConfigName(filepath.Base(configFile))
 	viper.SetConfigType("toml")
+
+	viper.AutomaticEnv()
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 
 	if err := viper.ReadInConfig(); err != nil {
 		return nil, err
